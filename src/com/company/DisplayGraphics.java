@@ -20,7 +20,7 @@ public class DisplayGraphics extends Canvas {
     }
 
     public void update(Graphics g) {
-        Image doubleBuffer = null;
+        Image doubleBuffer;
         Dimension d = getSize();
         Graphics g2;
         doubleBuffer = createImage(d.width, d.height);
@@ -42,7 +42,6 @@ public class DisplayGraphics extends Canvas {
             rectangle.setMaximumSize((int) scaleX, (int) Math.floor(scaleY * numbers.get(i)));
             if (i == 191) rectangle.setColor(Color.RED);
         }
-        //System.out.println(rectangles);
         panelHeight = height;
         repaint();
     }
@@ -60,12 +59,7 @@ public class DisplayGraphics extends Canvas {
             rectangles.add(rectangle);
             i++;
         }
-        for (rect rectangle : rectangles) {
-            //System.out.println(rectangle.getHeight());
-        }
-        //System.out.println(rectangles);
         panelHeight = height;
-        //super.paint(this.getGraphics());
         repaint();
     }
 }

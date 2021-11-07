@@ -53,35 +53,18 @@ public class SortingLib {
         }
         int j = i;
         while (j > 0 && array.get(j - 1) > array.get(j)) {
-            Lib.highlightRectangle(sortPanel, rectangles, j, array, Color.RED);
+            //Lib.highlightRectangle(sortPanel, rectangles, j, array, Color.RED);
+            Highlight.markRectangle(j, rectangles);
             int n = array.get(j - 1);
             int m = array.get(j);
             array.set(j, n);
             array.set(j - 1, m);
-            Lib.highlightRectangle(sortPanel, rectangles, j, array, Color.BLUE);
+            //Lib.highlightRectangle(sortPanel, rectangles, j, array, Color.BLUE);
+            Highlight.markClear(j, rectangles);
             Main.operations += 2;
             j--;
         }
-        Lib.highlightRectangle(sortPanel, rectangles, i, array, Color.BLUE);
+        //Lib.highlightRectangle(sortPanel, rectangles, i, array, Color.BLUE);
         Main.sortIterator++;
-        //return i;
-//        if (n > 0){
-//            insertionSort(array, n-1, rectangles);
-//            int x = array.get(n);
-//            int j = n-1;
-//            while (j >= 0 && array.get(j) > x) {
-//                array.set(j+1, array.get(j));
-//                j--;
-//            }
-//            array.set(j+1, x);
-//        }
-    }
-
-    static void wait(int ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
     }
 }
