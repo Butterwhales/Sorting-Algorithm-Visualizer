@@ -1,10 +1,9 @@
 package com.company;
 
+import static com.company.Main.rectangles;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
-
-import static com.company.Main.rectangles;
 
 public class DisplayGraphics extends Canvas {
     int panelHeight = 0;
@@ -13,7 +12,7 @@ public class DisplayGraphics extends Canvas {
         super.paint(g);
         int i = 0;
         for (rect rectangle : rectangles) {
-            g.setColor(Color.BLUE);
+            g.setColor(rectangle.getColor());
             g.fillRect(rectangle.getOffset() + (rectangle.getWidth() * i), panelHeight - rectangle.getHeight(), rectangle.getWidth(), rectangle.getHeight());
             i++;
         }
@@ -40,7 +39,7 @@ public class DisplayGraphics extends Canvas {
         for (int i = 0; i < numOfBars; i++) {
             rect rectangle = rectangles.get(i);
             rectangle.setMaximumSize((int) scaleX, (int) Math.floor(scaleY * numbers.get(i)));
-            if (i == 191) rectangle.setColor(Color.RED);
+            //if (i == 191) rectangle.setColor(Color.RED);
         }
         panelHeight = height;
         repaint();
@@ -55,7 +54,7 @@ public class DisplayGraphics extends Canvas {
         for (int num : numbers) {
             rect rectangle = new rect();
             rectangle.setMaximumSize((int) scaleX, (int) Math.floor(scaleY * num));
-            if (i == 191) rectangle.setColor(Color.RED);
+            rectangle.setColor(Color.BLUE);
             rectangles.add(rectangle);
             i++;
         }

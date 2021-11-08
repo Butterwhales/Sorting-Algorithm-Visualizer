@@ -93,4 +93,15 @@ public class Lib {
         panel.add(label);
         return label;
     }
+
+    public static void sleep(double millis) {
+        if (millis != 0)
+        try {
+            for (int i = 0; i <= millis; i++)
+                Thread.sleep(1);
+        } catch (Exception e){
+            System.out.println(e);
+            //Main.sortThread.interrupt();
+        }
+    }
 }
