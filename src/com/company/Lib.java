@@ -7,6 +7,8 @@ import java.util.Collections;
 
 public class Lib {
     /**
+     * Create Panel
+     *
      * @param name      Name of Panel
      * @param mainPanel Main Panel that the new panel will be added to
      * @return Return the created panel
@@ -14,51 +16,34 @@ public class Lib {
     public static JPanel createPanel(String name, JPanel mainPanel) {
         JPanel panel = new JPanel();
         switch (name) {
-            case "sortPanel":
+            case "sortPanel" -> {
                 panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
                 panel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
                 //panel.setLayout(new FlowLayout());
                 panel.setMaximumSize(new Dimension(40000, 40000));
                 panel.setBackground(Color.GRAY);
-                break;
-            case "buttonPanel":
+            }
+            case "buttonPanel" -> {
                 panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
                 panel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
                 panel.setMaximumSize(new Dimension(40000, 100));
                 //panel.setMinimumSize(new Dimension(99, 200));
                 panel.setBackground(Color.DARK_GRAY);
-                break;
+            }
         }
         mainPanel.add(panel);
         return panel;
     }
 
     /**
-     * @param sortPanel  Panel the rectangles are on
-     * @param rectangles Arraylist of rectangles
-     * @param highlight  Rectangle to highlight
-     * @param array
-     * @param color      Color of highlight
-     */
-    public static void highlightRectangle(JPanel sortPanel, ArrayList<rect> rectangles, int highlight, ArrayList<Integer> array, Color color) {
-//        rectangles.get(highlight).setBackground(color);
-//        rectangles.get(highlight).revalidate();
-//        rectangles.get(highlight).repaint();
-//        rectangles.get(highlight).validate();
-//        rectangles.get(highlight).updateUI();
-//        repaint(rectangles, sortPanel.getWidth(), sortPanel.getHeight(), array);
-//        sortPanel.revalidate();
-//        sortPanel.repaint();
-//        sortPanel.validate();
-    }
-
-    /**
-     * @param number Amount of numbers to generate
+     * Generate n amount of numbers
+     *
+     * @param n Amount of numbers to generate
      * @return Array of numbers generated
      */
-    public static ArrayList<Integer> generateNumbers(int number) {
+    public static ArrayList<Integer> generateNumbers(int n) {
         ArrayList<Integer> array = new ArrayList<>();
-        for (int i = 1; i <= number; i++) {
+        for (int i = 1; i <= n; i++) {
             array.add(i);
         }
         Collections.shuffle(array);
@@ -66,6 +51,8 @@ public class Lib {
     }
 
     /**
+     * Create JButton
+     *
      * @param text      Text that will be on the button
      * @param panel     Panel the button will be added to
      * @param alignment Alignment of the button
@@ -80,6 +67,8 @@ public class Lib {
     }
 
     /**
+     * Create JLabel
+     *
      * @param text      Text that will be on the label
      * @param panel     Panel the label will be added to
      * @param alignment Alignment of the label
@@ -94,14 +83,18 @@ public class Lib {
         return label;
     }
 
+    /**
+     * Sleep for a given amount of time in milliseconds
+     *
+     * @param millis Amount of milliseconds
+     */
     public static void sleep(double millis) {
         if (millis != 0)
-        try {
-            for (int i = 0; i <= millis; i++)
-                Thread.sleep(1);
-        } catch (Exception e){
-            System.out.println(e);
-            //Main.sortThread.interrupt();
-        }
+            try {
+                for (int i = 0; i <= millis; i++)
+                    Thread.sleep(1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 }

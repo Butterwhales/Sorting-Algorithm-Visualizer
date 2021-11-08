@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class Main extends JFrame {
     private static final int FRAME_WIDTH = 1000;
@@ -12,16 +13,18 @@ public class Main extends JFrame {
     static int delay = 0;
 
     static Thread sortThread;
-    private Thread drawThread;
     private Thread currentThread;
 
     ArrayList<Integer> array = Lib.generateNumbers(50);
     static ArrayList<rect> rectangles = new ArrayList<>();
     JPanel sortPanel;
-    static volatile long operations = 1;
+    static long operations = 1;
     static int sortIterator = 1;
     static boolean isSorted = false;
 
+    /**
+     * Main method where everything starts
+     */
     public Main() {
         //TODO put in methods
         //Frame & Panel Creation
@@ -75,7 +78,6 @@ public class Main extends JFrame {
 
         String[] algorithms = {"Bogosort", "Bogobogosort", "Insertion Sort", "Selection Sort", "Bubble Sort"};
         JComboBox<String> sortDropdown = new JComboBox<>(algorithms);
-        //sortDropdown.setForeground(Color.WHITE);
         sortDropdown.setAlignmentX(Component.CENTER_ALIGNMENT);
         sortDropdown.setMaximumSize(new Dimension(150, 20));
         sortDropdown.setSelectedIndex(2);
@@ -94,8 +96,6 @@ public class Main extends JFrame {
 
         //Frame
         DisplayGraphics canvas = new DisplayGraphics();
-        //canvas.repaint();
-        //canvas.init();
         sortPanel.add(canvas);
         sortPanel.setDoubleBuffered(true);
         background.add(infoPanel);
@@ -125,7 +125,7 @@ public class Main extends JFrame {
         sortButton.addActionListener(e -> {
             if (sortThread != null && sortThread.isAlive())
                 return;
-            if (this.sortThread == null) throw new AssertionError();
+            if (sortThread == null) throw new AssertionError();
             currentThread = new Thread(sortThread);
             currentThread.start();
 
@@ -137,14 +137,11 @@ public class Main extends JFrame {
             sortPanel.revalidate();
             operationsLabel.setText("0");
             operations = 0;
-            Lib.highlightRectangle(sortPanel, rectangles, sortIterator - 1, array, Color.BLUE);
             sortIterator = 1;
             System.out.println(frame.getWidth());
         });
         stopButton.addActionListener(e -> {
-            //t.stop()
             if (currentThread != null) this.currentThread.interrupt();
-            //this.drawThread.interrupt();
         });
         rectSpinner.addChangeListener(e -> {
             if (currentThread != null) this.currentThread.interrupt();
@@ -153,8 +150,6 @@ public class Main extends JFrame {
             rectangles.clear();
             operationsLabel.setText("0");
             operations = 0;
-//            sortIterator = 1;
-
             if (spinnerVal > 15 && spinnerVal < 700) frame.setMinimumSize(new Dimension(718, 400));
             else if (spinnerVal >= 700) frame.setMinimumSize(new Dimension(spinnerVal + 18, 400));
             else frame.setMinimumSize(new Dimension(700, 400));
@@ -165,7 +160,7 @@ public class Main extends JFrame {
             if (currentThread != null) this.currentThread.interrupt();
             operationsLabel.setText("0");
             operations = 0;
-            switch (sortDropdown.getSelectedItem().toString().toLowerCase()) {
+            switch (Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase()) {
                 case "bogosort" -> {
                     algorithmLabel.setText("Bogosort");
                     bestLabel.setText("O(1)");
@@ -201,53 +196,44 @@ public class Main extends JFrame {
         });
 
 
-        this.sortThread = new Thread() {
-            @Override
-            public void run() {
-                operations = 0;
-                sortIterator = 0;
-                isSorted = false;
-                while (!Thread.interrupted()) {
-                    delay = (Integer) delaySpinner.getModel().getValue();
-                    if (!isSorted) {
-                        switch (sortDropdown.getSelectedItem().toString().toLowerCase()) {
-                            case "bogosort" -> SortingLib.bogoSort(array, rectangles);
-                            case "bogobogosort" -> SortingLib.bogobogoSort(array, rectangles);
-                            case "insertion sort" -> SortingLib.insertionSort(array, sortIterator, rectangles);
-                            case "selection sort" -> SortingLib.selectionSort(array, sortIterator, rectangles);
-                            case "bubble sort" -> SortingLib.bubbleSort(array, rectangles);
-                            default -> {
-                                System.out.println("Not a valid sorting algorithm");
-                                Thread.currentThread().interrupt();
-                            }
+        sortThread = new Thread(() -> {
+            operations = 0;
+            sortIterator = 0;
+            isSorted = false;
+            while (!Thread.interrupted()) {
+                delay = (Integer) delaySpinner.getModel().getValue();
+                if (!isSorted) {
+                    switch (Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase()) {
+                        case "bogosort" -> SortingLib.bogoSort(array, rectangles);
+                        case "bogobogosort" -> SortingLib.bogobogoSort(array, rectangles);
+                        case "insertion sort" -> SortingLib.insertionSort(array, sortIterator, rectangles);
+                        case "selection sort" -> SortingLib.selectionSort(array, sortIterator, rectangles);
+                        case "bubble sort" -> SortingLib.bubbleSort(array, rectangles);
+                        default -> {
+                            System.out.println("Not a valid sorting algorithm");
+                            Thread.currentThread().interrupt();
                         }
-                        operations++;
-                    } else {
-                        //System.out.println("1: " + Thread.interrupted());
-                        Thread.currentThread().interrupt();
-                        //System.out.println("2: " + Thread.interrupted());
-                        return;
                     }
+                    operations++;
+                } else {
+                    Thread.currentThread().interrupt();
+                    return;
                 }
             }
-        };
+        });
 
-        this.drawThread = new Thread() {
-            @Override
-            public void run() {
-                while (!Thread.interrupted()) {
-                    canvas.repaintRect(frame.getWidth(), (frame.getHeight() - frameDiff), array);
-                    //System.out.println("H: "+frame.getHeight() + " W: " + frame.getWidth());
-                    operationsLabel.setText(String.valueOf(operations));
-                    try {
-                        Thread.sleep(20);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        Thread drawThread = new Thread(() -> {
+            while (!Thread.interrupted()) {
+                canvas.repaintRect(frame.getWidth(), (frame.getHeight() - frameDiff), array);
+                operationsLabel.setText(String.valueOf(operations));
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        };
-        this.drawThread.start();
+        });
+        drawThread.start();
     }
 
     public static void main(String[] args) {

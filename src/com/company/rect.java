@@ -9,6 +9,8 @@ public class rect {
     private Color color;
 
     /**
+     * Sets rectangle maximum size
+     *
      * @param x Width to set the rectangle to
      * @param y Height to set the rectangle to
      */
@@ -18,6 +20,8 @@ public class rect {
     }
 
     /**
+     * Gets rectangle height
+     *
      * @return Return height of rectangle
      */
     public int getHeight() {
@@ -25,6 +29,8 @@ public class rect {
     }
 
     /**
+     * Sets rectangle height
+     *
      * @param y Height to set the rectangle to
      */
     public void setHeight(int y) {
@@ -32,6 +38,8 @@ public class rect {
     }
 
     /**
+     * Get rectangle width
+     *
      * @return Return width of rectangle
      */
     public int getWidth() {
@@ -39,6 +47,8 @@ public class rect {
     }
 
     /**
+     * Set rectangle width
+     *
      * @param x Width to set rectangle to
      */
     public void setWidth(int x) {
@@ -46,6 +56,8 @@ public class rect {
     }
 
     /**
+     * Get rectangle offset
+     *
      * @return Return offset
      */
     public int getOffset() {
@@ -53,6 +65,8 @@ public class rect {
     }
 
     /**
+     * Set Rectangle Offset
+     *
      * @param x Offset to set rectangle to
      */
     public void setOffset(int x) {
@@ -60,6 +74,8 @@ public class rect {
     }
 
     /**
+     * Get rectangle color
+     *
      * @return Color of rectangle
      */
     public Color getColor() {
@@ -67,6 +83,8 @@ public class rect {
     }
 
     /**
+     * Set rectangle color
+     *
      * @param x Color to set rectangle to
      */
     public void setColor(Color x) {
