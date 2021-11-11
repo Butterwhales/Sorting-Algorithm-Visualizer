@@ -19,7 +19,6 @@ public class Lib {
             case "sortPanel" -> {
                 panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
                 panel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-                //panel.setLayout(new FlowLayout());
                 panel.setMaximumSize(new Dimension(40000, 40000));
                 panel.setBackground(Color.GRAY);
             }
@@ -27,7 +26,6 @@ public class Lib {
                 panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
                 panel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
                 panel.setMaximumSize(new Dimension(40000, 100));
-                //panel.setMinimumSize(new Dimension(99, 200));
                 panel.setBackground(Color.DARK_GRAY);
             }
         }

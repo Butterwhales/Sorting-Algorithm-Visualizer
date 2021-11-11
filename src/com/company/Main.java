@@ -3,24 +3,35 @@ package com.company;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Main extends JFrame {
     private static final int FRAME_WIDTH = 1000;
     private static final int FRAME_HEIGHT = 500;
-    static int delay = 0;
+    static double delay = 0.1;
+    ArrayList<Integer> array = Lib.generateNumbers(250);
 
     static Thread sortThread;
     private Thread currentThread;
-
-    ArrayList<Integer> array = Lib.generateNumbers(50);
     static ArrayList<rect> rectangles = new ArrayList<>();
+    JFrame frame;
     JPanel sortPanel;
-    static long operations = 1;
-    static int sortIterator = 1;
+    DisplayGraphics canvas = new DisplayGraphics();
+    JComboBox<String> sortDropdown;
+    JSpinner rectSpinner;
+    JLabel comparisonsLabel, swapsLabel, algorithmLabel, bestLabel, averageLabel, worstLabel;
+    int frameDiff;
+    static long swaps = 0;
+    static long comparisons = 0;
+    static int sortIterator = 0;
     static boolean isSorted = false;
+    static boolean interruptLoop = false;
 
     /**
      * Main method where everything starts
@@ -28,7 +39,7 @@ public class Main extends JFrame {
     public Main() {
         //TODO put in methods
         //Frame & Panel Creation
-        JFrame frame = new JFrame("Sorting Algorithm Visualizer");
+        frame = new JFrame("Sorting Algorithm Visualizer");
         JPanel background = new JPanel();
         background.setLayout(new BoxLayout(background, BoxLayout.Y_AXIS));
         background.setBackground(Color.DARK_GRAY);
@@ -41,18 +52,19 @@ public class Main extends JFrame {
         JPanel buttonPanel = Lib.createPanel("buttonPanel", background);
 
         //Info Panel
-        JLabel algorithmLabel = Lib.createLabel("Bogosort", infoPanel, Component.LEFT_ALIGNMENT);
+        algorithmLabel = Lib.createLabel("Bogosort", infoPanel, Component.LEFT_ALIGNMENT);
         infoPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         Lib.createLabel("Best:", infoPanel, Component.LEFT_ALIGNMENT);
-        JLabel bestLabel = Lib.createLabel("O(1)", infoPanel, Component.LEFT_ALIGNMENT);
+        bestLabel = Lib.createLabel("O(1)", infoPanel, Component.LEFT_ALIGNMENT);
         Lib.createLabel("Average:", infoPanel, Component.LEFT_ALIGNMENT);
-        JLabel AverageLabel = Lib.createLabel("O((n+1)!)", infoPanel, Component.LEFT_ALIGNMENT);
+        averageLabel = Lib.createLabel("O((n+1)!)", infoPanel, Component.LEFT_ALIGNMENT);
         Lib.createLabel("Worst:", infoPanel, Component.LEFT_ALIGNMENT);
-        JLabel worstLabel = Lib.createLabel("O(i)", infoPanel, Component.LEFT_ALIGNMENT);
-
+        worstLabel = Lib.createLabel("O(i)", infoPanel, Component.LEFT_ALIGNMENT);
         infoPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-        Lib.createLabel("Operations:", infoPanel, Component.LEFT_ALIGNMENT);
-        JLabel operationsLabel = Lib.createLabel("0", infoPanel, Component.LEFT_ALIGNMENT);
+        Lib.createLabel("Comparisons:", infoPanel, Component.LEFT_ALIGNMENT);
+        comparisonsLabel = Lib.createLabel("0", infoPanel, Component.LEFT_ALIGNMENT);
+        Lib.createLabel("Swaps:", infoPanel, Component.LEFT_ALIGNMENT);
+        swapsLabel = Lib.createLabel("0", infoPanel, Component.LEFT_ALIGNMENT);
 
         //Button Panel
         JButton sortButton = Lib.createButton("Sort", buttonPanel, Component.CENTER_ALIGNMENT);
@@ -64,7 +76,7 @@ public class Main extends JFrame {
         Lib.createLabel("Delay ms", buttonPanel, Component.CENTER_ALIGNMENT);
         buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 
-        SpinnerNumberModel delaySpinnerModel = new SpinnerNumberModel(delay, 0, 10000, 10);
+        SpinnerNumberModel delaySpinnerModel = new SpinnerNumberModel(delay, 0, 10000, .1);
         JSpinner delaySpinner = new JSpinner(delaySpinnerModel);
         delaySpinner.setForeground(Color.WHITE);
         delaySpinner.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -76,11 +88,11 @@ public class Main extends JFrame {
         Lib.createLabel("Algorithm", buttonPanel, Component.CENTER_ALIGNMENT);
         buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 
-        String[] algorithms = {"Bogosort", "Bogobogosort", "Insertion Sort", "Selection Sort", "Bubble Sort"};
-        JComboBox<String> sortDropdown = new JComboBox<>(algorithms);
+        String[] algorithms = {"Bogosort", "Bogobogosort", "Insertion Sort", "Selection Sort", "Bubble Sort", "Bubble Sort Flag", "Merge Sort"};
+        sortDropdown = new JComboBox<>(algorithms);
         sortDropdown.setAlignmentX(Component.CENTER_ALIGNMENT);
         sortDropdown.setMaximumSize(new Dimension(150, 20));
-        sortDropdown.setSelectedIndex(2);
+        sortDropdown.setSelectedIndex(6);
         buttonPanel.add(sortDropdown);
 
         buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
@@ -88,14 +100,13 @@ public class Main extends JFrame {
         buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 
         SpinnerNumberModel rectSpinnerModel = new SpinnerNumberModel(array.size(), 1, 10000, 1);
-        JSpinner rectSpinner = new JSpinner(rectSpinnerModel);
+        rectSpinner = new JSpinner(rectSpinnerModel);
         rectSpinner.setForeground(Color.WHITE);
         rectSpinner.setAlignmentX(Component.CENTER_ALIGNMENT);
         rectSpinner.setMaximumSize(new Dimension(50, 20));
         buttonPanel.add(rectSpinner);
 
         //Frame
-        DisplayGraphics canvas = new DisplayGraphics();
         sortPanel.add(canvas);
         sortPanel.setDoubleBuffered(true);
         background.add(infoPanel);
@@ -110,10 +121,10 @@ public class Main extends JFrame {
         frame.pack();
         frame.setVisible(true);
         frame.revalidate();
-        int frameDiff = frame.getHeight() - sortPanel.getHeight();
+        frameDiff = frame.getHeight() - sortPanel.getHeight();
         canvas.paintRect(frame.getWidth(), (frame.getHeight() - frameDiff), array);
-        System.out.println(buttonPanel.getWidth());
 
+        //Action Listeners
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -128,112 +139,127 @@ public class Main extends JFrame {
             if (sortThread == null) throw new AssertionError();
             currentThread = new Thread(sortThread);
             currentThread.start();
-
         });
+
         randButton.addActionListener(e -> {
-            if (this.currentThread != null) this.currentThread.interrupt();
+            if (this.currentThread != null) interruptLoop = true;
             Collections.shuffle(array);
             canvas.repaintRect(frame.getWidth(), (frame.getHeight() - frameDiff), array);
             sortPanel.revalidate();
-            operationsLabel.setText("0");
-            operations = 0;
-            sortIterator = 1;
-            System.out.println(frame.getWidth());
+            setSwapsAndComparisons();
+            sortIterator = 0;
         });
+
         stopButton.addActionListener(e -> {
-            if (currentThread != null) this.currentThread.interrupt();
+            if (currentThread != null) interruptLoop = true;
         });
+
         rectSpinner.addChangeListener(e -> {
-            if (currentThread != null) this.currentThread.interrupt();
+            if (currentThread != null) interruptLoop = true;
             int spinnerVal = (Integer) rectSpinner.getModel().getValue();
             array = Lib.generateNumbers(spinnerVal);
             rectangles.clear();
-            operationsLabel.setText("0");
-            operations = 0;
+            setSwapsAndComparisons();
             if (spinnerVal > 15 && spinnerVal < 700) frame.setMinimumSize(new Dimension(718, 400));
             else if (spinnerVal >= 700) frame.setMinimumSize(new Dimension(spinnerVal + 18, 400));
             else frame.setMinimumSize(new Dimension(700, 400));
             canvas.paintRect(frame.getWidth(), (frame.getHeight() - frameDiff), array);
             canvas.repaintRect(frame.getWidth(), (frame.getHeight() - frameDiff), array);
         });
+
         sortDropdown.addActionListener(e -> {
-            if (currentThread != null) this.currentThread.interrupt();
-            operationsLabel.setText("0");
-            operations = 0;
+            if (currentThread != null) interruptLoop = true;
+            setSwapsAndComparisons();
             switch (Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase()) {
                 case "bogosort" -> {
                     algorithmLabel.setText("Bogosort");
                     bestLabel.setText("O(1)");
-                    AverageLabel.setText("O((n+1)!)");
+                    averageLabel.setText("O((n+1)!)");
                     worstLabel.setText("O(I)");
                 }
                 case "bogobogosort" -> {
                     algorithmLabel.setText("Bogobogosort");
                     bestLabel.setText("O(1)");
-                    AverageLabel.setText("O(n*(n!)^n)");
+                    averageLabel.setText("O(n*(n!)^n)");
                     worstLabel.setText("O(I)");
                 }
                 case "insertion sort" -> {
                     algorithmLabel.setText("Insertion Sort");
                     bestLabel.setText("O(n)");
-                    AverageLabel.setText("O(n^2)");
+                    averageLabel.setText("O(n^2)");
                     worstLabel.setText("O(n^2)");
                 }
                 case "selection sort" -> {
                     algorithmLabel.setText("Selection Sort");
                     bestLabel.setText("O(n^2)");
-                    AverageLabel.setText("O(n^2)");
+                    averageLabel.setText("O(n^2)");
                     worstLabel.setText("O(n^2)");
                 }
                 case "bubble sort" -> {
                     algorithmLabel.setText("Bubble Sort");
                     bestLabel.setText("O(n^2)");
-                    AverageLabel.setText("O(n^2)");
+                    averageLabel.setText("O(n^2)");
                     worstLabel.setText("O(n^2)");
+                }
+                case "bubble sort flag" -> {
+                    algorithmLabel.setText("Bubble Sort Flag");
+                    bestLabel.setText("O(n^2)");
+                    averageLabel.setText("O(n^2)");
+                    worstLabel.setText("O(n^2)");
+                }
+                case "merge sort" -> {
+                    algorithmLabel.setText("Merge Sort");
+                    bestLabel.setText("O(n log n)");
+                    averageLabel.setText("O(n log n)");
+                    worstLabel.setText("O(n log n)");
                 }
                 default -> throw new IllegalStateException("Unexpected value: " + sortDropdown.getSelectedItem().toString().toLowerCase());
             }
         });
 
-
+        //Sort Thread
         sortThread = new Thread(() -> {
-            operations = 0;
-            sortIterator = 0;
+            setSwapsAndComparisons();
             isSorted = false;
-            while (!Thread.interrupted()) {
-                delay = (Integer) delaySpinner.getModel().getValue();
-                if (!isSorted) {
-                    switch (Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase()) {
-                        case "bogosort" -> SortingLib.bogoSort(array, rectangles);
-                        case "bogobogosort" -> SortingLib.bogobogoSort(array, rectangles);
-                        case "insertion sort" -> SortingLib.insertionSort(array, sortIterator, rectangles);
-                        case "selection sort" -> SortingLib.selectionSort(array, sortIterator, rectangles);
-                        case "bubble sort" -> SortingLib.bubbleSort(array, rectangles);
-                        default -> {
-                            System.out.println("Not a valid sorting algorithm");
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                    operations++;
-                } else {
-                    Thread.currentThread().interrupt();
-                    return;
+            interruptLoop = false;
+            switch (Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase()) {
+                case "bogosort" -> SortingLib.bogoSort(array, rectangles);
+                case "bogobogosort" -> SortingLib.bogobogoSort(array, rectangles);
+                case "insertion sort" -> SortingLib.insertionSort(array, rectangles);
+                case "selection sort" -> SortingLib.selectionSort(array, rectangles);
+                case "bubble sort" -> {
+                    sortIterator = array.size();
+                    SortingLib.bubbleSort(array, rectangles);
                 }
+                case "bubble sort flag" -> SortingLib.bubbleSortFlag(array, rectangles);
+                case "merge sort" -> SortingLib.mergeSort(array, 0, array.size() - 1, rectangles);
+
+                default -> System.out.println("Not a valid sorting algorithm");
             }
         });
+
+        //Drawing Thread
+        DecimalFormat comaFormat = new DecimalFormat("#");
+        comaFormat.setGroupingUsed(true);
+        comaFormat.setGroupingSize(3);
 
         Thread drawThread = new Thread(() -> {
-            while (!Thread.interrupted()) {
+            ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+            executor.scheduleAtFixedRate(() -> {
                 canvas.repaintRect(frame.getWidth(), (frame.getHeight() - frameDiff), array);
-                operationsLabel.setText(String.valueOf(operations));
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+                comparisonsLabel.setText(comaFormat.format(comparisons));
+                swapsLabel.setText(comaFormat.format(swaps));
+                delay = (Double) delaySpinner.getModel().getValue();
+            }, 0, 20, TimeUnit.MILLISECONDS);
         });
         drawThread.start();
+    }
+
+    public void setSwapsAndComparisons() {
+        comparisonsLabel.setText("0");
+        swapsLabel.setText("0");
+        swaps = 0;
+        comparisons = 0;
     }
 
     public static void main(String[] args) {
