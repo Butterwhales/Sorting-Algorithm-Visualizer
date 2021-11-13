@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.sorts.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -14,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class Main extends JFrame {
     private static final int FRAME_WIDTH = 1000;
     private static final int FRAME_HEIGHT = 500;
-    static double delay = 0.1;
+    public static double delay = 0.1;
     ArrayList<Integer> array = Lib.generateNumbers(250);
 
     static Thread sortThread;
@@ -27,11 +29,11 @@ public class Main extends JFrame {
     JSpinner rectSpinner;
     JLabel comparisonsLabel, swapsLabel, algorithmLabel, bestLabel, averageLabel, worstLabel;
     int frameDiff;
-    static long swaps = 0;
-    static long comparisons = 0;
+    public static long swaps = 0;
+    public static long comparisons = 0;
     static int sortIterator = 0;
-    static boolean isSorted = false;
-    static boolean interruptLoop = false;
+    public static boolean isSorted = false;
+    public static boolean interruptLoop = false;
 
     /**
      * Main method where everything starts
@@ -88,18 +90,18 @@ public class Main extends JFrame {
         Lib.createLabel("Algorithm", buttonPanel, Component.CENTER_ALIGNMENT);
         buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 
-        String[] algorithms = {"Bogosort", "Bogobogosort", "Insertion Sort", "Selection Sort", "Bubble Sort", "Bubble Sort Flag", "Merge Sort"};
+        String[] algorithms = {"Bogosort", "Bogobogosort", "Insertion Sort", "Selection Sort", "Bubble Sort", "Bubble Sort Flag", "Merge Sort", "Shell Sort", "Cocktail Shaker Sort"};
         sortDropdown = new JComboBox<>(algorithms);
         sortDropdown.setAlignmentX(Component.CENTER_ALIGNMENT);
         sortDropdown.setMaximumSize(new Dimension(150, 20));
-        sortDropdown.setSelectedIndex(6);
+        sortDropdown.setSelectedIndex(8);
         buttonPanel.add(sortDropdown);
 
         buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
         Lib.createLabel("Items", buttonPanel, Component.CENTER_ALIGNMENT);
         buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 
-        SpinnerNumberModel rectSpinnerModel = new SpinnerNumberModel(array.size(), 1, 10000, 1);
+        SpinnerNumberModel rectSpinnerModel = new SpinnerNumberModel(array.size(), 1, 1920, 1);
         rectSpinner = new JSpinner(rectSpinnerModel);
         rectSpinner.setForeground(Color.WHITE);
         rectSpinner.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -123,6 +125,7 @@ public class Main extends JFrame {
         frame.revalidate();
         frameDiff = frame.getHeight() - sortPanel.getHeight();
         canvas.paintRect(frame.getWidth(), (frame.getHeight() - frameDiff), array);
+        Sort.setStatistics(Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase(), algorithmLabel, bestLabel, averageLabel, worstLabel);
 
         //Action Listeners
         frame.addComponentListener(new ComponentAdapter() {
@@ -170,51 +173,7 @@ public class Main extends JFrame {
         sortDropdown.addActionListener(e -> {
             if (currentThread != null) interruptLoop = true;
             setSwapsAndComparisons();
-            switch (Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase()) {
-                case "bogosort" -> {
-                    algorithmLabel.setText("Bogosort");
-                    bestLabel.setText("O(1)");
-                    averageLabel.setText("O((n+1)!)");
-                    worstLabel.setText("O(I)");
-                }
-                case "bogobogosort" -> {
-                    algorithmLabel.setText("Bogobogosort");
-                    bestLabel.setText("O(1)");
-                    averageLabel.setText("O(n*(n!)^n)");
-                    worstLabel.setText("O(I)");
-                }
-                case "insertion sort" -> {
-                    algorithmLabel.setText("Insertion Sort");
-                    bestLabel.setText("O(n)");
-                    averageLabel.setText("O(n^2)");
-                    worstLabel.setText("O(n^2)");
-                }
-                case "selection sort" -> {
-                    algorithmLabel.setText("Selection Sort");
-                    bestLabel.setText("O(n^2)");
-                    averageLabel.setText("O(n^2)");
-                    worstLabel.setText("O(n^2)");
-                }
-                case "bubble sort" -> {
-                    algorithmLabel.setText("Bubble Sort");
-                    bestLabel.setText("O(n^2)");
-                    averageLabel.setText("O(n^2)");
-                    worstLabel.setText("O(n^2)");
-                }
-                case "bubble sort flag" -> {
-                    algorithmLabel.setText("Bubble Sort Flag");
-                    bestLabel.setText("O(n^2)");
-                    averageLabel.setText("O(n^2)");
-                    worstLabel.setText("O(n^2)");
-                }
-                case "merge sort" -> {
-                    algorithmLabel.setText("Merge Sort");
-                    bestLabel.setText("O(n log n)");
-                    averageLabel.setText("O(n log n)");
-                    worstLabel.setText("O(n log n)");
-                }
-                default -> throw new IllegalStateException("Unexpected value: " + sortDropdown.getSelectedItem().toString().toLowerCase());
-            }
+            Sort.setStatistics(Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase(), algorithmLabel, bestLabel, averageLabel, worstLabel);
         });
 
         //Sort Thread
@@ -223,16 +182,15 @@ public class Main extends JFrame {
             isSorted = false;
             interruptLoop = false;
             switch (Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase()) {
-                case "bogosort" -> SortingLib.bogoSort(array, rectangles);
-                case "bogobogosort" -> SortingLib.bogobogoSort(array, rectangles);
-                case "insertion sort" -> SortingLib.insertionSort(array, rectangles);
-                case "selection sort" -> SortingLib.selectionSort(array, rectangles);
-                case "bubble sort" -> {
-                    sortIterator = array.size();
-                    SortingLib.bubbleSort(array, rectangles);
-                }
-                case "bubble sort flag" -> SortingLib.bubbleSortFlag(array, rectangles);
-                case "merge sort" -> SortingLib.mergeSort(array, 0, array.size() - 1, rectangles);
+                case "bogosort" -> BogoSort.runSort(array, rectangles);
+                case "bogobogosort" -> BogobogoSort.runSort(array, rectangles);
+                case "insertion sort" -> InsertionSort.runSort(array, rectangles);
+                case "selection sort" -> SelectionSort.runSort(array, rectangles);
+                case "bubble sort" -> BubbleSort.runSort(array, rectangles);
+                case "bubble sort flag" -> BubbleSortFlag.runSort(array, rectangles);
+                case "merge sort" -> MergeSort.runSort(array, 0, array.size() - 1, rectangles);
+                case "shell sort" -> ShellSort.runSort(array, rectangles);
+                case "cocktail shaker sort" -> CocktailShakerSort.runSort(array, rectangles);
 
                 default -> System.out.println("Not a valid sorting algorithm");
             }

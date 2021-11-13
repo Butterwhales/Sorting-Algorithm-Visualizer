@@ -90,5 +90,4 @@ public class rect {
     public void setColor(Color x) {
         color = x;
     }
-
 }
