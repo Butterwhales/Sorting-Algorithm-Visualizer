@@ -49,13 +49,13 @@ public class Sort {
     /**
      * Sets the statistics and name in the info panel
      *
-     * @param sort              Name of sort
-     * @param algorithmLabel    Label for algorithm name
-     * @param bestLabel         Label for the best performance
-     * @param averageLabel      Label for the average performance
-     * @param worstLabel        Label for the worst performance
+     * @param sort           Name of sort
+     * @param algorithmLabel Label for algorithm name
+     * @param bestLabel      Label for the best performance
+     * @param averageLabel   Label for the average performance
+     * @param worstLabel     Label for the worst performance
      */
-    protected static void setStatistics(String sort, JLabel algorithmLabel, JLabel bestLabel, JLabel averageLabel, JLabel worstLabel){
+    protected static void setStatistics(String sort, JLabel algorithmLabel, JLabel bestLabel, JLabel averageLabel, JLabel worstLabel) {
         //Sort sortThing = getSort(sort);
         //sortThing.name;
         //TODO Figure out how to make this not a switch
@@ -70,6 +70,12 @@ public class Sort {
             case "merge sort" -> MergeSort.setStatistic();
             case "shell sort" -> ShellSort.setStatistic();
             case "cocktail shaker sort" -> CocktailShakerSort.setStatistic();
+            case "quicksort" -> QuickSort.setStatistic();
+            case "comb sort" -> CombSort.setStatistic();
+            case "gnome sort" -> GnomeSort.setStatistic();
+            case "slow sort" -> SlowSort.setStatistic();
+            case "silly sort" -> SillySort.setStatistic();
+            case "pancake sort" -> PancakeSort.setStatistic();
             default -> {
                 name = sort;
                 best = null;

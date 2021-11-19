@@ -5,6 +5,8 @@ import com.company.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+//Used https://en.wikipedia.org/wiki/Shellsort and https://www.geeksforgeeks.org/shellsort/ as reference
+
 public class ShellSort extends Sort {
     /**
      * Shell Sort Algorithm

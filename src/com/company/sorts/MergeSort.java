@@ -5,6 +5,8 @@ import com.company.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+//Used https://en.wikipedia.org/wiki/Merge_sort and https://www.geeksforgeeks.org/merge-sort/ as reference
+
 public class MergeSort extends Sort {
 
     /**

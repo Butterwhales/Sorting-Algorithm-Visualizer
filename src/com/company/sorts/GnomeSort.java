@@ -5,40 +5,40 @@ import com.company.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-//Used https://en.wikipedia.org/wiki/Insertion_sort and https://www.geeksforgeeks.org/insertion-sort/ as reference
+//Used https://en.wikipedia.org/wiki/Gnome_sort as reference
 
-public class InsertionSort extends Sort {
+public class GnomeSort extends Sort {
     /**
-     * Insertion Sort Algorithm
+     * Gnome Sort Algorithm
      *
      * @param array      List of numbers to be sorted
      * @param rectangles List of rectangles for highlighting
      */
     public static void runSort(ArrayList<Integer> array, ArrayList<rect> rectangles) {
-        for (int i = 0; i < array.size(); i++) {
-            Highlight.markRectangle(i, rectangles, Color.RED);
-            int pos = i;
-            while (pos > 0 && array.get(pos - 1) > array.get(pos)) {
-                Highlight.markRectangle(pos - 1, rectangles, Color.GREEN);
-                swap(array, pos - 1, pos);
+        int pos = 0;
+        while (pos < array.size()) {
+            if (pos == 0 || array.get(pos) >= array.get(pos - 1)) {
+                pos++;
+            } else {
+                Highlight.markRectangle(pos, rectangles, Color.RED);
+                Highlight.markRectangle(pos - 1, rectangles, Color.RED);
                 Lib.sleep(Main.delay);
+                swap(array, pos, pos - 1);
+                Highlight.markClear(pos, rectangles);
                 Highlight.markClear(pos - 1, rectangles);
                 pos--;
-                Main.comparisons++;
             }
-            Highlight.markClear(i, rectangles);
-
+            Main.comparisons++;
             if (Main.interruptLoop)
                 return;
         }
     }
 
-
     /**
      * Sets the name and statistics of the sort
      */
-    public static void setStatistic(){
-        name = "Insertion Sort";
+    public static void setStatistic() {
+        name = "Gnome Sort";
         best = "O(n)";
         average = "O(n^2)";
         worst = "O(n^2)";

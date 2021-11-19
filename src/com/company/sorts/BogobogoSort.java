@@ -6,6 +6,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
+//Used https://www.dangermouse.net/esoteric/bogobogosort.html as reference
+
 public class BogobogoSort extends Sort {
     static int bogoLength = 2;
     /**

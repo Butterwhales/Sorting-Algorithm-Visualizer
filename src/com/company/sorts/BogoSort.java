@@ -8,6 +8,8 @@ import com.company.rect;
 import java.util.ArrayList;
 import java.util.Collections;
 
+//Didn't use anything for reference
+
 public class BogoSort extends Sort {
     /**
      * Bogosort Algorithm

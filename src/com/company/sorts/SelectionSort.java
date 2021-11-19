@@ -5,6 +5,8 @@ import com.company.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+//Used https://en.wikipedia.org/wiki/Selection_sort and https://www.geeksforgeeks.org/selection-sort/ as reference
+
 public class SelectionSort extends Sort {
 
     /**

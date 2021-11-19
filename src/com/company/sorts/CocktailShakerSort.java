@@ -5,6 +5,8 @@ import com.company.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+//Used https://en.wikipedia.org/wiki/Cocktail_shaker_sort as reference
+
 public class CocktailShakerSort extends Sort {
     /**
      * Cocktail Shaker Sort Algorithm

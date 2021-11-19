@@ -5,6 +5,8 @@ import com.company.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+//Used https://en.wikipedia.org/wiki/Bubble_sort and https://www.geeksforgeeks.org/bubble-sort/ as reference
+
 public class BubbleSort extends Sort {
     static int sortIterator;
     /**

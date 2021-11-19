@@ -90,11 +90,12 @@ public class Main extends JFrame {
         Lib.createLabel("Algorithm", buttonPanel, Component.CENTER_ALIGNMENT);
         buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 
-        String[] algorithms = {"Bogosort", "Bogobogosort", "Insertion Sort", "Selection Sort", "Bubble Sort", "Bubble Sort Flag", "Merge Sort", "Shell Sort", "Cocktail Shaker Sort"};
+        //TODO Make this work better :)
+        String[] algorithms = {"Bogosort", "Bogobogosort", "Slow Sort", "Silly Sort", "Insertion Sort", "Selection Sort", "Bubble Sort", "Bubble Sort Flag", "Merge Sort", "Shell Sort", "Cocktail Shaker Sort", "Quicksort", "Comb Sort", "Gnome Sort", "Pancake Sort"};
         sortDropdown = new JComboBox<>(algorithms);
         sortDropdown.setAlignmentX(Component.CENTER_ALIGNMENT);
         sortDropdown.setMaximumSize(new Dimension(150, 20));
-        sortDropdown.setSelectedIndex(8);
+        sortDropdown.setSelectedIndex(14);
         buttonPanel.add(sortDropdown);
 
         buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
@@ -191,6 +192,12 @@ public class Main extends JFrame {
                 case "merge sort" -> MergeSort.runSort(array, 0, array.size() - 1, rectangles);
                 case "shell sort" -> ShellSort.runSort(array, rectangles);
                 case "cocktail shaker sort" -> CocktailShakerSort.runSort(array, rectangles);
+                case "quicksort" -> QuickSort.runSort(array, 0, array.size() - 1, rectangles);
+                case "comb sort" -> CombSort.runSort(array, rectangles);
+                case "gnome sort" -> GnomeSort.runSort(array, rectangles);
+                case "pancake sort" -> PancakeSort.runSort(array, rectangles);
+                case "slow sort" -> SlowSort.runSort(array, 0, array.size() - 1, rectangles);
+                case "silly sort" -> SillySort.runSort(array, 0, array.size() - 1, rectangles);
 
                 default -> System.out.println("Not a valid sorting algorithm");
             }
