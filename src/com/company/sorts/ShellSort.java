@@ -14,8 +14,8 @@ public class ShellSort extends Sort {
      */
     public static void runSort(ArrayList<Integer> array, ArrayList<rect> rectangles) {
         //Add standard gaps?
-        for (int gap = (array.size() - 1) / 2; gap > 0; gap /= 2) {
-            for (int i = gap; i < array.size() - 1; i++) {
+        for (int gap = (array.size()-1) / 2; gap > 0; gap /= 2) {
+            for (int i = gap; i < array.size(); i++) {
                 int temp = array.get(i);
                 int j;
                 for (j = i; j >= gap && temp < array.get(j - gap); j -= gap) {
@@ -29,5 +29,15 @@ public class ShellSort extends Sort {
                 array.set(j, temp);
             }
         }
+    }
+
+    /**
+     * Sets the name and statistics of the sort
+     */
+    public static void setStatistic(){
+        name = "Shell Sort";
+        best = "O(n log n)";
+        average = "O(n log n)";
+        worst = "O(n log n)";
     }
 }

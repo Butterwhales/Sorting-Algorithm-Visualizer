@@ -35,4 +35,14 @@ public class BubbleSort extends Sort {
                 return;
         }
     }
+
+    /**
+     * Sets the name and statistics of the sort
+     */
+    public static void setStatistic(){
+        name = "Bubble Sort";
+        best = "O(n^2)";
+        average = "O(n^2)";
+        worst = "O(n^2)";
+    }
 }

@@ -81,4 +81,14 @@ public class MergeSort extends Sort {
             k++;
         }
     }
+
+    /**
+     * Sets the name and statistics of the sort
+     */
+    public static void setStatistic(){
+        name = "Merge Sort";
+        best = "O(n log n)";
+        average = "O(n log n)";
+        worst = "O(n log n)";
+    }
 }

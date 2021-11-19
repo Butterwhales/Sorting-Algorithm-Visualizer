@@ -6,10 +6,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class BubbleSortFlag extends Sort {
-//    public String name = "Bubble Sort Flag";
-//    public String best = "O(n^2)";
-//    public String average = "O(n^2)";
-//    public String worst = "O(n^2)";
 
     static int sortIterator;
     /**
@@ -41,5 +37,15 @@ public class BubbleSortFlag extends Sort {
             if (Main.interruptLoop)
                 return;
         }
+    }
+
+    /**
+     * Sets the name and statistics of the sort
+     */
+    public static void setStatistic(){
+        name = "Bubble Sort Flag";
+        best = "O(n^2)";
+        average = "O(n^2)";
+        worst = "O(n^2)";
     }
 }

@@ -28,4 +28,14 @@ public class BogoSort extends Sort {
                 return;
         }
     }
+
+    /**
+     * Sets the name and statistics of the sort
+     */
+    public static void setStatistic(){
+        name = "Bogosort";
+        best = "O(1)";
+        average = "O((n+1)!)";
+        worst = "O(I)";
+    }
 }

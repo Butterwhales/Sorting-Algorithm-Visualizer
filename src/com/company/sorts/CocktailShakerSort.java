@@ -46,4 +46,14 @@ public class CocktailShakerSort extends Sort {
         Main.comparisons++;
         return swapped;
     }
+
+    /**
+     * Sets the name and statistics of the sort
+     */
+    public static void setStatistic(){
+        name = "Cocktail Shaker Sort";
+        best = "O(n)";
+        average = "O(n^2)";
+        worst = "O(n^2)";
+    }
 }

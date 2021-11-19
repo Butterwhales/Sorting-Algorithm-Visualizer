@@ -32,4 +32,14 @@ public class SelectionSort extends Sort {
                 return;
         }
     }
+
+    /**
+     * Sets the name and statistics of the sort
+     */
+    public static void setStatistic(){
+        name = "Selection Sort";
+        best = "O(n^2)";
+        average = "O(n^2)";
+        worst = "O(n^2)";
+    }
 }
