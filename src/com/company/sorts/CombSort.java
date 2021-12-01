@@ -31,7 +31,7 @@ public class CombSort extends Sort {
                     Highlight.markRectangle(i, rectangles, Color.RED);
                     Highlight.markRectangle(i + gap, rectangles, Color.RED);
                     swap(array, i, i + gap);
-                    Lib.sleep(Main.delay);
+                    Sort.sleep(Main.delay);
                     sorted = false;
                     Highlight.markClear(i, rectangles);
                     Highlight.markClear(i + gap, rectangles);

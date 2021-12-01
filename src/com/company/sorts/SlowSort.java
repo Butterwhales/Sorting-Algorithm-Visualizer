@@ -28,7 +28,7 @@ public class SlowSort extends Sort {
             Highlight.markRectangle(high, rectangles, Color.RED);
             Highlight.markRectangle(mid, rectangles, Color.RED);
             swap(array, high, mid);
-            Lib.sleep(Main.delay);
+            Sort.sleep(Main.delay);
             Highlight.markClear(high, rectangles);
             Highlight.markClear(mid, rectangles);
         }

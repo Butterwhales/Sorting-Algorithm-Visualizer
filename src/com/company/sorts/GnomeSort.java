@@ -22,7 +22,7 @@ public class GnomeSort extends Sort {
             } else {
                 Highlight.markRectangle(pos, rectangles, Color.RED);
                 Highlight.markRectangle(pos - 1, rectangles, Color.RED);
-                Lib.sleep(Main.delay);
+                Sort.sleep(Main.delay);
                 swap(array, pos, pos - 1);
                 Highlight.markClear(pos, rectangles);
                 Highlight.markClear(pos - 1, rectangles);

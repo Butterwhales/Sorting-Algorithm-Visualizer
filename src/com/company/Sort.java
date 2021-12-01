@@ -47,6 +47,27 @@ public class Sort {
     }
 
     /**
+     * Sleep for a given amount of time in milliseconds
+     *
+     * @param millis Amount of milliseconds
+     */
+    public static void sleep(double millis) {
+        if (millis != 0)
+            if (millis >= 1) {
+                try {
+                    for (int i = 0; i <= millis; i++)
+                        Thread.sleep(1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                long start = System.nanoTime();
+                //noinspection StatementWithEmptyBody
+                while (System.nanoTime() - start < (1000000 * (millis))) ;
+            }
+    }
+
+    /**
      * Sets the statistics and name in the info panel
      *
      * @param sort           Name of sort
@@ -55,7 +76,7 @@ public class Sort {
      * @param averageLabel   Label for the average performance
      * @param worstLabel     Label for the worst performance
      */
-    protected static void setStatistics(String sort, JLabel algorithmLabel, JLabel bestLabel, JLabel averageLabel, JLabel worstLabel) {
+    protected static void setSortingStatistics(String sort, JLabel algorithmLabel, JLabel bestLabel, JLabel averageLabel, JLabel worstLabel) {
         //Sort sortThing = getSort(sort);
         //sortThing.name;
         //TODO Figure out how to make this not a switch
@@ -88,6 +109,35 @@ public class Sort {
         bestLabel.setText(best);
         averageLabel.setText(average);
         worstLabel.setText(worst);
+    }
+
+    /**
+     * Runs the corresponding sorting algorithm
+     *
+     * @param sortName   Name of sorting algorithm
+     * @param array      List of numbers
+     * @param rectangles List of rectangles
+     */
+    public static void runSort(String sortName, ArrayList<Integer> array, ArrayList<rect> rectangles) {
+        switch (sortName) {
+            case "bogosort" -> BogoSort.runSort(array, rectangles);
+            case "bogobogosort" -> BogobogoSort.runSort(array, rectangles);
+            case "insertion sort" -> InsertionSort.runSort(array, rectangles);
+            case "selection sort" -> SelectionSort.runSort(array, rectangles);
+            case "bubble sort" -> BubbleSort.runSort(array, rectangles);
+            case "bubble sort flag" -> BubbleSortFlag.runSort(array, rectangles);
+            case "merge sort" -> MergeSort.runSort(array, 0, array.size() - 1, rectangles);
+            case "shell sort" -> ShellSort.runSort(array, rectangles);
+            case "cocktail shaker sort" -> CocktailShakerSort.runSort(array, rectangles);
+            case "quicksort" -> QuickSort.runSort(array, 0, array.size() - 1, rectangles);
+            case "comb sort" -> CombSort.runSort(array, rectangles);
+            case "gnome sort" -> GnomeSort.runSort(array, rectangles);
+            case "pancake sort" -> PancakeSort.runSort(array, rectangles);
+            case "slow sort" -> SlowSort.runSort(array, 0, array.size() - 1, rectangles);
+            case "silly sort" -> SillySort.runSort(array, 0, array.size() - 1, rectangles);
+
+            default -> System.out.println("Not a valid sorting algorithm");
+        }
     }
 
 //    private static Sort getSort(String sort) {

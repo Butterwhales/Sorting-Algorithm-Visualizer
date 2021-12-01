@@ -21,7 +21,7 @@ public class InsertionSort extends Sort {
             while (pos > 0 && array.get(pos - 1) > array.get(pos)) {
                 Highlight.markRectangle(pos - 1, rectangles, Color.GREEN);
                 swap(array, pos - 1, pos);
-                Lib.sleep(Main.delay);
+                Sort.sleep(Main.delay);
                 Highlight.markClear(pos - 1, rectangles);
                 pos--;
                 Main.comparisons++;

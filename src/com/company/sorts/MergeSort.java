@@ -53,8 +53,7 @@ public class MergeSort extends Sort {
             R.add(array.get(mid + 1 + i));
         }
 
-        int i = 0, j = 0;
-        int k = left;
+        int i = 0, j = 0, k = left;
 
         while (i < n1 && j < n2) {
             if (L.get(i) <= R.get(j)) {
@@ -67,7 +66,7 @@ public class MergeSort extends Sort {
             Main.swaps++;
             Main.comparisons++;
             Highlight.markRectangle(k, rectangles, Color.GREEN);
-            Lib.sleep(Main.delay);
+            Sort.sleep(Main.delay);
             Highlight.markClear(k, rectangles);
             k++;
         }

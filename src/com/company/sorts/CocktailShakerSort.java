@@ -41,7 +41,7 @@ public class CocktailShakerSort extends Sort {
             Highlight.markRectangle(i + 1, rectangles, Color.RED);
             swap(array, i, i + 1);
             swapped = true;
-            Lib.sleep(Main.delay);
+            Sort.sleep(Main.delay);
             Highlight.markClear(i, rectangles);
             Highlight.markClear(i + 1, rectangles);
         }

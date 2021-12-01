@@ -25,7 +25,7 @@ public class SillySort extends Sort {
             Highlight.markRectangle(low, rectangles, Color.RED);
             Highlight.markRectangle(mid + 1, rectangles, Color.RED);
             swap(array, low, mid + 1);
-            Lib.sleep(Main.delay);
+            Sort.sleep(Main.delay);
             Highlight.markClear(low, rectangles);
             Highlight.markClear(mid + 1, rectangles);
         }

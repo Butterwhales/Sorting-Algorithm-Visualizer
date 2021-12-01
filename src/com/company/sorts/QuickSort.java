@@ -46,7 +46,7 @@ public class QuickSort extends Sort {
                 i++;
                 Highlight.markRectangle(i, rectangles, Color.RED);
                 Highlight.markRectangle(j, rectangles, Color.RED);
-                Lib.sleep(Main.delay);
+                Sort.sleep(Main.delay);
                 swap(array, i, j);
                 Highlight.markClear(i, rectangles);
                 Highlight.markClear(j, rectangles);

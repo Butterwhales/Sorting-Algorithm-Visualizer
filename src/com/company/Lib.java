@@ -81,24 +81,4 @@ public class Lib {
         return label;
     }
 
-    /**
-     * Sleep for a given amount of time in milliseconds
-     *
-     * @param millis Amount of milliseconds
-     */
-    public static void sleep(double millis) {
-        if (millis != 0)
-            if(millis >= 1) {
-                try {
-                    for (int i = 0; i <= millis; i++)
-                        Thread.sleep(1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                long start = System.nanoTime();
-                //noinspection StatementWithEmptyBody
-                while (System.nanoTime() - start < (1000000*(millis)));
-            }
-    }
 }

@@ -24,7 +24,7 @@ public class ShellSort extends Sort {
                     array.set(j, array.get(j - gap));
                     Main.comparisons++;
                     Highlight.markRectangle(j, rectangles, Color.GREEN);
-                    Lib.sleep(Main.delay);
+                    Sort.sleep(Main.delay);
                     Highlight.markClear(j, rectangles);
                 }
                 Main.swaps++;

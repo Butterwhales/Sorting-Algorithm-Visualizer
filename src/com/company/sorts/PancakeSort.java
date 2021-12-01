@@ -46,7 +46,7 @@ public class PancakeSort extends Sort {
             Highlight.markRectangle(i, rectangles, Color.RED);
             Highlight.markRectangle(j, rectangles, Color.RED);
             swap(array, j, i);
-            Lib.sleep(Main.delay);
+            Sort.sleep(Main.delay);
             Highlight.markClear(i, rectangles);
             Highlight.markClear(j, rectangles);
             i--;

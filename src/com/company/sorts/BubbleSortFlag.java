@@ -29,7 +29,7 @@ public class BubbleSortFlag extends Sort {
                 Main.comparisons++;
                 Highlight.markRectangle(i, rectangles, Color.RED);
                 Highlight.markRectangle(i + 1, rectangles, Color.RED);
-                Lib.sleep(Main.delay);
+                Sort.sleep(Main.delay);
                 Highlight.markClear(i, rectangles);
                 Highlight.markClear(i + 1, rectangles);
             }

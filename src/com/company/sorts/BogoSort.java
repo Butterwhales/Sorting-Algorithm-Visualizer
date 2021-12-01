@@ -1,6 +1,5 @@
 package com.company.sorts;
 
-import com.company.Lib;
 import com.company.Main;
 import com.company.Sort;
 import com.company.rect;
@@ -24,7 +23,7 @@ public class BogoSort extends Sort {
                 return;
             }
             Collections.shuffle(array);
-            Lib.sleep(Main.delay);
+            Sort.sleep(Main.delay);
 
             if (Main.interruptLoop)
                 return;

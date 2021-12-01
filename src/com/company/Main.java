@@ -1,7 +1,5 @@
 package com.company;
 
-import com.company.sorts.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -91,7 +89,8 @@ public class Main extends JFrame {
         buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 
         //TODO Make this work better :)
-        String[] algorithms = {"Bogosort", "Bogobogosort", "Slow Sort", "Silly Sort", "Insertion Sort", "Selection Sort", "Bubble Sort", "Bubble Sort Flag", "Merge Sort", "Shell Sort", "Cocktail Shaker Sort", "Quicksort", "Comb Sort", "Gnome Sort", "Pancake Sort"};
+        String[] algorithms = {"Bogosort", "Bogobogosort", "Slow Sort", "Silly Sort", "Insertion Sort", "Selection Sort",
+                "Bubble Sort", "Bubble Sort Flag", "Merge Sort", "Shell Sort", "Cocktail Shaker Sort", "Quicksort", "Comb Sort", "Gnome Sort", "Pancake Sort"};
         sortDropdown = new JComboBox<>(algorithms);
         sortDropdown.setAlignmentX(Component.CENTER_ALIGNMENT);
         sortDropdown.setMaximumSize(new Dimension(150, 20));
@@ -126,7 +125,7 @@ public class Main extends JFrame {
         frame.revalidate();
         frameDiff = frame.getHeight() - sortPanel.getHeight();
         canvas.paintRect(frame.getWidth(), (frame.getHeight() - frameDiff), array);
-        Sort.setStatistics(Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase(), algorithmLabel, bestLabel, averageLabel, worstLabel);
+        Sort.setSortingStatistics(Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase(), algorithmLabel, bestLabel, averageLabel, worstLabel);
 
         //Action Listeners
         frame.addComponentListener(new ComponentAdapter() {
@@ -174,7 +173,7 @@ public class Main extends JFrame {
         sortDropdown.addActionListener(e -> {
             if (currentThread != null) interruptLoop = true;
             setSwapsAndComparisons();
-            Sort.setStatistics(Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase(), algorithmLabel, bestLabel, averageLabel, worstLabel);
+            Sort.setSortingStatistics(Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase(), algorithmLabel, bestLabel, averageLabel, worstLabel);
         });
 
         //Sort Thread
@@ -182,25 +181,7 @@ public class Main extends JFrame {
             setSwapsAndComparisons();
             isSorted = false;
             interruptLoop = false;
-            switch (Objects.requireNonNull(sortDropdown.getSelectedItem()).toString().toLowerCase()) {
-                case "bogosort" -> BogoSort.runSort(array, rectangles);
-                case "bogobogosort" -> BogobogoSort.runSort(array, rectangles);
-                case "insertion sort" -> InsertionSort.runSort(array, rectangles);
-                case "selection sort" -> SelectionSort.runSort(array, rectangles);
-                case "bubble sort" -> BubbleSort.runSort(array, rectangles);
-                case "bubble sort flag" -> BubbleSortFlag.runSort(array, rectangles);
-                case "merge sort" -> MergeSort.runSort(array, 0, array.size() - 1, rectangles);
-                case "shell sort" -> ShellSort.runSort(array, rectangles);
-                case "cocktail shaker sort" -> CocktailShakerSort.runSort(array, rectangles);
-                case "quicksort" -> QuickSort.runSort(array, 0, array.size() - 1, rectangles);
-                case "comb sort" -> CombSort.runSort(array, rectangles);
-                case "gnome sort" -> GnomeSort.runSort(array, rectangles);
-                case "pancake sort" -> PancakeSort.runSort(array, rectangles);
-                case "slow sort" -> SlowSort.runSort(array, 0, array.size() - 1, rectangles);
-                case "silly sort" -> SillySort.runSort(array, 0, array.size() - 1, rectangles);
-
-                default -> System.out.println("Not a valid sorting algorithm");
-            }
+            Sort.runSort(sortDropdown.getSelectedItem().toString().toLowerCase(), array, rectangles);
         });
 
         //Drawing Thread

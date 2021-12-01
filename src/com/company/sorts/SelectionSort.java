@@ -20,7 +20,7 @@ public class SelectionSort extends Sort {
             int lowIndex = i;
             for (int j = i + 1; j < array.size(); j++) {
                 Highlight.markRectangle(j, rectangles, Color.RED);
-                Lib.sleep(Main.delay);
+                Sort.sleep(Main.delay);
                 if (array.get(j) < array.get(lowIndex))
                     lowIndex = j;
                 Main.comparisons++;

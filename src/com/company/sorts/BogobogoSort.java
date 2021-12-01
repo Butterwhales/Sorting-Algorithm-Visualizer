@@ -30,7 +30,7 @@ public class BogobogoSort extends Sort {
             for (int i = 0; i <= bogoLength; i++) copy.add(array.get(i));
             for (int i = 0; i <= copy.size() - 1; i++) Highlight.markRectangle(i, rectangles, Color.RED);
             Collections.shuffle(copy);
-            Lib.sleep(Main.delay);
+            Sort.sleep(Main.delay);
             for (int i = 0; i <= bogoLength; i++) array.set(i, copy.get(i));
             copy.clear();
             Highlight.clearAll(rectangles);
