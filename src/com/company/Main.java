@@ -12,7 +12,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends JFrame {
-    private static final int FRAME_WIDTH = 1000;
+    private static final int FRAME_WIDTH = 1020;
     private static final int FRAME_HEIGHT = 500;
     public static double delay = 0.1;
     ArrayList<Integer> array = Lib.generateNumbers(250);
@@ -25,6 +25,7 @@ public class Main extends JFrame {
     DisplayGraphics canvas = new DisplayGraphics();
     JComboBox<String> sortDropdown;
     JSpinner rectSpinner;
+    JButton runAllButton;
     JLabel comparisonsLabel, swapsLabel, algorithmLabel, bestLabel, averageLabel, worstLabel;
     int frameDiff;
     public static long swaps = 0;

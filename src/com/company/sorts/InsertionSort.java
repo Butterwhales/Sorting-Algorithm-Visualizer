@@ -19,10 +19,12 @@ public class InsertionSort extends Sort {
             Highlight.markRectangle(i, rectangles, Color.RED);
             int pos = i;
             while (pos > 0 && array.get(pos - 1) > array.get(pos)) {
-                Highlight.markRectangle(pos - 1, rectangles, Color.GREEN);
+                Highlight.markRectangle(pos - 1, rectangles, Color.RED);
+                Highlight.markRectangle(pos, rectangles, Color.RED);
                 swap(array, pos - 1, pos);
                 Sort.sleep(Main.delay);
                 Highlight.markClear(pos - 1, rectangles);
+                Highlight.markClear(pos, rectangles);
                 pos--;
                 Main.comparisons++;
             }

@@ -20,11 +20,13 @@ public class SelectionSort extends Sort {
             int lowIndex = i;
             for (int j = i + 1; j < array.size(); j++) {
                 Highlight.markRectangle(j, rectangles, Color.RED);
+                Highlight.markRectangle(lowIndex, rectangles, Color.RED);
                 Sort.sleep(Main.delay);
+                Highlight.markClear(j, rectangles);
+                Highlight.markClear(lowIndex, rectangles);
                 if (array.get(j) < array.get(lowIndex))
                     lowIndex = j;
                 Main.comparisons++;
-                Highlight.markClear(j, rectangles);
             }
             if (lowIndex != i)
                 swap(array, i, lowIndex);

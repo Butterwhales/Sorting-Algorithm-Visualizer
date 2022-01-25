@@ -4,6 +4,7 @@ import com.company.sorts.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Sort {
     protected static String name;

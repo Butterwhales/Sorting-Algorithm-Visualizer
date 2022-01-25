@@ -28,10 +28,11 @@ public class PancakeSort extends Sort {
 
     static int findMax(ArrayList<Integer> array, int high) {
         int maxIndex = 0;
-        for (int i = 0; i < high; ++i)
+        for (int i = 0; i < high; ++i) {
             if (array.get(i) > array.get(maxIndex))
                 maxIndex = i;
             Main.comparisons++;
+        }
         return maxIndex;
     }
 
